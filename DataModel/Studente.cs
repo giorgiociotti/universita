@@ -13,7 +13,8 @@ namespace Università.DataModel
         public override string Cognome { get; set; }
         public override int Eta { get; set; }
         public override string Address { get; set; }
-        public override MainEnumerators.Genere Genere { get => throw new NotImplementedException(); set => throw new NotImplementedException();}
+        public override MainEnumerators.Genere Genere { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
 
         internal Studente(string matricola, string nome, string cognome, int eta, string address, MainEnumerators.Genere genere)
         {
@@ -24,8 +25,15 @@ namespace Università.DataModel
             Address = address;
             Genere = genere;
         }
-        internal Studente() { }
-
+        internal Studente()
+        {
+            Matricola = string.Empty;
+            Nome = string.Empty;
+            Cognome = string.Empty;
+            Eta = 0;
+            Address = string.Empty;
+            Genere = MainEnumerators.Genere.None;
+        }
 
         internal static List<Studente> studenti = new List<Studente>();
 

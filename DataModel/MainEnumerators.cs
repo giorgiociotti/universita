@@ -10,9 +10,27 @@ namespace Università.DataModel
     {
         internal enum Genere
         {
+            None,
             Maschio,
             Femmina,
             Altro
+        }
+        internal enum Facolta
+        {
+            None,
+            Ingegneria,
+            Medicina,
+            Lettere,
+            Economia,
+            Scienze
+        }
+
+        internal enum TipoCorso
+        {
+            None,
+            Triennale,
+            Magistrale,
+            Dottorato
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Università.DataModels
         [Required]
         [Key]
         [MinLength(5, ErrorMessage = "L'Id deve contenere 5 caratteri!"), MaxLength(5, ErrorMessage = "L'Id deve contenere 5 caratteri!")]
-        internal string Id { get; set; }
+        internal string ID { get; set; }
         [Required]
         [MinLength(2, ErrorMessage = "Il nome deve contenere almeno 2 caratteri!"), MaxLength(20, ErrorMessage = "Il nome deve contenere al massimo 20 caratteri!")]
         internal override string Nome { get; set; }
@@ -29,7 +29,7 @@ namespace Università.DataModels
         internal override MainEnumerators.Genere Genere { get; set; }
         internal Docente()
         {
-            Id = string.Empty;
+            ID = string.Empty;
             Nome = string.Empty;
             Cognome = string.Empty;
             Eta = 0;
@@ -38,7 +38,7 @@ namespace Università.DataModels
         }
         internal Docente(string id, string nome, string cognome, int eta, string address, MainEnumerators.Genere genere)
         {
-            Id = id;
+            ID = id;
             Nome = nome;
             Cognome = cognome;
             Eta = eta;
@@ -47,9 +47,105 @@ namespace Università.DataModels
         }
         internal void Print()
         {
-            Console.WriteLine($"Id: {Id,-7} Nome: {Nome,-10} Cognome: {Cognome,-15}Età: {Eta,-5}Indirizzo: {Address,-25}Genere: {Genere,-5}");
+            Console.WriteLine($"Id: {ID,-7} Nome: {Nome,-10} Cognome: {Cognome,-15}Età: {Eta,-5}Indirizzo: {Address,-25}Genere: {Genere,-5}");
 
         }
+        public class DocenteManager
+        {
+            private readonly string _filePath;
+            private List<Docente> _docenti; // Mantieni i dati in memoria
 
+            public string ID { get; private set; }
+
+            public DocenteManager(string filePath)
+            {
+                _filePath = filePath;
+                _docenti = LeggiDocenti(); // Carica i dati all'avvio
+            }
+            // Crea una nuova persona
+            internal void CreaDocente(Docente docente)
+            {
+                int nuovoID = OttieniNuovoId();
+                docente.ID = nuovoID.ToString(); // Convertito int a string
+                _docenti.Add(docente);
+                SovrascriviFile();
+            }
+
+            // Legge tutte le persone
+            internal List<Docente> LeggiDocenti()
+            {
+                List<Docente> docenti = new List<Docente>();
+
+                if (File.Exists(_filePath))
+                {
+                    using (StreamReader sr = new StreamReader(_filePath))
+                    {
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            string[] parts = line.Split(',');
+                            if (parts.Length == 5)
+                            {
+                                Docente docente = new()
+                                {
+                                    ID = parts[0],
+                                    Nome = parts[1],
+                                    Cognome = parts[2],
+                                    Eta = int.TryParse(parts[3], out int eta) ? eta : 0,
+                                    Address = parts[4]
+                                };
+                                docenti.Add(docente);
+                            }
+                        }
+                    }
+                }
+
+                return docenti;
+            }
+
+            // Aggiorna una persona esistente
+            internal void AggiornaDocenti(Docente docente)
+            {
+                int index = _docenti.FindIndex(p => p.ID == docente.ID);
+
+                if (index != -1)
+                {
+                    _docenti[index] = docente;
+                    SovrascriviFile();
+                }
+            }
+
+            // Elimina una persona
+            public void EliminaDocente(string id)
+            {
+                _docenti.RemoveAll(p => p.ID == id);
+                SovrascriviFile();
+            }
+
+            // Metodi di supporto
+            private int OttieniNuovoId()
+            {
+                if (_docenti.Count == 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return _docenti.Max(p => int.Parse(p.ID)) + 1;
+                }
+            }
+
+            private void SovrascriviFile()
+            {
+                using (StreamWriter sw = new StreamWriter(_filePath))
+                {
+                    foreach (Docente docente in _docenti)
+                    {
+                        sw.WriteLine($"{docente.ID},{docente.Nome},{docente.Cognome},{docente.Eta},{docente.Address}");
+                    }
+                }
+            }
+        }
     }
 }
+

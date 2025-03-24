@@ -1,0 +1,5 @@
+Ingegneria;Triennale;08:00;18:00
+Medicina;Magistrale;07:30;19:00
+Lettere;Dottorato;09:00;17:30
+Economia;Triennale;08:30;18:30
+Scienze;Magistrale;09:15;19:15

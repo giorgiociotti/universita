@@ -24,6 +24,11 @@ namespace Università.DataModels
         internal abstract string Address { get; set; }
         [Required]
         internal abstract MainEnumerators.Genere Genere { get; set; }
+        [Required]
+        internal abstract MainEnumerators.Facolta Facolta { get; set; }
+        [Required]
+        internal abstract List<EventoPlanning> Planning { get; set; } 
+
 
     }
 }

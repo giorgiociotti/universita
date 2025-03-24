@@ -11,6 +11,6 @@ namespace Università.DataModels
         internal static List<Facolta> Facolta { get; set; } = [];
         internal static List<Docente> Docenti { get; set; } = [];
         internal static List<Studente> Studenti { get; set; } = [];
-        internal static string Nome { get; set; }
+       
     }
 }

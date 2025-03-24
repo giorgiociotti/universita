@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -19,17 +20,21 @@ namespace Università.BLogic
             string? filePath = ConfigurationManager.AppSettings["FilePath"];
             string? studentiFileName = ConfigurationManager.AppSettings["StudentiFileName"];
             string? docentiFileName = ConfigurationManager.AppSettings["DocentiFileName"];
+            string? facoltaFileName = ConfigurationManager.AppSettings["FacoltaFileName"];
+            string? calendarioFileName = ConfigurationManager.AppSettings["CalendarioFileName"];
 
 
-            if (filePath != null && studentiFileName != null && docentiFileName != null)
+            if (filePath != null && studentiFileName != null && docentiFileName != null && facoltaFileName !=null && calendarioFileName!=null)
             {                
                 ConfigParams.AppFilePath = filePath;
                 ConfigParams.StudentiFileName = Path.Combine(filePath, studentiFileName);
                 ConfigParams.DocentiFileName = Path.Combine(filePath, docentiFileName);
+                ConfigParams.FacoltaFileName = Path.Combine(filePath, facoltaFileName);
+                ConfigParams.CalendarioFileName = Path.Combine(filePath, calendarioFileName);
             }
             else
             {
-                Console.WriteLine("FilePath, DocentiFileName o StudentiFileName sono nulli in app settings.");
+                Log.Error("Qualche percorso è nullo in app settings.");
             }
             
         }

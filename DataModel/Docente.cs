@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Università.BLogic;
+using static Università.DataModels.MainEnumerators;
 
 namespace Università.DataModels
 {
@@ -27,6 +29,11 @@ namespace Università.DataModels
         internal override string Address { get; set; }
         [Required]
         internal override MainEnumerators.Genere Genere { get; set; }
+        [Required]
+        internal override List<EventoPlanning> Planning { get; set; } = [];
+        internal override MainEnumerators.Facolta Facolta { get; set; }
+        internal MainEnumerators.Facolta Facolta2 { get; set; }
+
         internal Docente()
         {
             ID = string.Empty;
@@ -35,8 +42,10 @@ namespace Università.DataModels
             Eta = 0;
             Address = string.Empty;
             Genere = MainEnumerators.Genere.None;
+            Facolta= MainEnumerators.Facolta.None;
+            Facolta2 = MainEnumerators.Facolta.None;
         }
-        internal Docente(string id, string nome, string cognome, int eta, string address, MainEnumerators.Genere genere)
+        internal Docente(string id, string nome, string cognome, int eta, string address, MainEnumerators.Genere genere, MainEnumerators.Facolta facolta, MainEnumerators.Facolta facolta2)
         {
             ID = id;
             Nome = nome;
@@ -44,107 +53,65 @@ namespace Università.DataModels
             Eta = eta;
             Address = address;
             Genere = genere;
+            Facolta = facolta;
+            Facolta2 = facolta2;
         }
         internal void Print()
         {
-            Console.WriteLine($"Id: {ID,-7} Nome: {Nome,-10} Cognome: {Cognome,-15}Età: {Eta,-5}Indirizzo: {Address,-25}Genere: {Genere,-5}");
+            Console.WriteLine($"Id: {ID,-7} Nome: {Nome,-10} Cognome: {Cognome,-15}Età: {Eta,-5}Indirizzo: {Address,-25}Genere: {Genere,-5}Facoltà: {Facolta,-8} Facoltà2: {Facolta2,-8}");
 
         }
-        public class DocenteManager
-        {
-            private readonly string _filePath;
-            private List<Docente> _docenti; // Mantieni i dati in memoria
-
-            public string ID { get; private set; }
-
-            public DocenteManager(string filePath)
-            {
-                _filePath = filePath;
-                _docenti = LeggiDocenti(); // Carica i dati all'avvio
-            }
+        internal static class DocenteManager
+        {            
+            
             // Crea una nuova persona
-            internal void CreaDocente(Docente docente)
-            {
-                int nuovoID = OttieniNuovoId();
-                docente.ID = nuovoID.ToString(); // Convertito int a string
-                _docenti.Add(docente);
-                SovrascriviFile();
+            internal static void CreaDocente(Docente docente)
+            {                
+                
+                Universita.Docenti.Add(docente);
+                ObtainData.SalvaListaDocentiFile();
+                ObtainData.OttieniListaDocentiFacolta(TrovaFacolta(docente));
             }
 
-            // Legge tutte le persone
-            internal List<Docente> LeggiDocenti()
-            {
-                List<Docente> docenti = new List<Docente>();
-
-                if (File.Exists(_filePath))
-                {
-                    using (StreamReader sr = new StreamReader(_filePath))
-                    {
-                        string line;
-                        while ((line = sr.ReadLine()) != null)
-                        {
-                            string[] parts = line.Split(',');
-                            if (parts.Length == 5)
-                            {
-                                Docente docente = new()
-                                {
-                                    ID = parts[0],
-                                    Nome = parts[1],
-                                    Cognome = parts[2],
-                                    Eta = int.TryParse(parts[3], out int eta) ? eta : 0,
-                                    Address = parts[4]
-                                };
-                                docenti.Add(docente);
-                            }
-                        }
-                    }
-                }
-
-                return docenti;
-            }
+            
 
             // Aggiorna una persona esistente
-            internal void AggiornaDocenti(Docente docente)
+            internal static void AggiornaDocenti(Docente docente)
             {
-                int index = _docenti.FindIndex(p => p.ID == docente.ID);
+                int index = Universita.Docenti.FindIndex(p => p.ID == docente.ID);
 
                 if (index != -1)
                 {
-                    _docenti[index] = docente;
-                    SovrascriviFile();
+                    Universita.Docenti[index] = docente;
+                    ObtainData.SalvaListaDocentiFile();
+                    ObtainData.OttieniListaDocentiFacolta(TrovaFacolta(docente));
                 }
             }
 
             // Elimina una persona
-            public void EliminaDocente(string id)
+            internal static void EliminaDocente(string id)
             {
-                _docenti.RemoveAll(p => p.ID == id);
-                SovrascriviFile();
+                Docente docente = Universita.Docenti.Find(p => p.ID == id);
+                ObtainData.RimuoviDaListaDocentiFacolta(TrovaFacolta(docente),docente);
+                Universita.Docenti.RemoveAll(p => p.ID == id);
+                ObtainData.SalvaListaDocentiFile();
+            }
+            
+            internal static Facolta TrovaFacolta(Docente docente)
+            {
+                return Universita.Facolta[Universita.Facolta.FindIndex(f => f.Nome == docente.Facolta)];
             }
 
-            // Metodi di supporto
-            private int OttieniNuovoId()
+            internal static void PrintDocenti()
             {
-                if (_docenti.Count == 0)
+                Console.WriteLine("Docenti:");
+                foreach (var docente in Universita.Docenti)
                 {
-                    return 1;
-                }
-                else
-                {
-                    return _docenti.Max(p => int.Parse(p.ID)) + 1;
+                    Console.WriteLine($"- {docente.ID}, {docente.Nome} {docente.Cognome}, {docente.Genere}, {docente.Eta}, {docente.Facolta}, {docente.Facolta2}, {docente.Address}");
                 }
             }
 
-            private void SovrascriviFile()
-            {
-                using (StreamWriter sw = new StreamWriter(_filePath))
-                {
-                    foreach (Docente docente in _docenti)
-                    {
-                        sw.WriteLine($"{docente.ID},{docente.Nome},{docente.Cognome},{docente.Eta},{docente.Address}");
-                    }
-                }
-            }
+
         }
     }
 }

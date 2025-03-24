@@ -11,6 +11,8 @@ namespace Università.DataModels
             internal static string? AppFilePath { get; set; }
             internal static string? StudentiFileName { get; set; }
             internal static string? DocentiFileName { get; set; }
-        }
+            internal static string? FacoltaFileName { get; set; }
+            internal static string? CalendarioFileName { get; set; }
+    }
     
 }

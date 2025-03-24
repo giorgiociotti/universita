@@ -13,5 +13,15 @@ namespace Università.DataModels
         internal Facolta Facolta { get; set; }
         internal string NomeEsame { get; set; }
         internal DateTime Data { get; set; }
+        internal List<Studente> Studenti { get; set; } = [];
+
+        public Esame(int iD, Docente docente, Facolta facolta, string nomeEsame, DateTime data)
+        {
+            ID = iD;
+            Docente = docente;
+            Facolta = facolta;
+            NomeEsame = nomeEsame;
+            Data = data;
+        }
     }
 }

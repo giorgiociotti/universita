@@ -33,5 +33,13 @@ namespace Università.DataModels
             Magistrale,
             Dottorato
         }
+
+        internal enum TipoAttivita
+        {
+            None,
+            Lezione,
+            Laboratorio,
+            Esame
+        }
     }
 }

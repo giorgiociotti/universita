@@ -13,7 +13,9 @@ namespace Università.DataModels
         internal DateTime Orario { get; set; }
         internal bool Lab {  get; set; }
         internal List<Esame> Esami { get; set; } = [];
-        
+        internal List<Docente> Docenti { get; set; } = [];
+        internal List<Studente> Studenti { get; set; } = [];    
+
 
         internal Facolta(MainEnumerators.Facolta nome, MainEnumerators.TipoCorso tipo, DateTime orario, bool lab)
         {

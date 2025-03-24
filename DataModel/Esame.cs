@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Università.DataModel
+namespace Università.DataModels
 {
     internal class Esame
     {
@@ -14,5 +14,4 @@ namespace Università.DataModel
         internal string NomeEsame { get; set; }
         internal DateTime Data { get; set; }
     }
-
 }

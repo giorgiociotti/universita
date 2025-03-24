@@ -1,6 +1,6 @@
 ﻿using Serilog;
 using Università.BLogic;
-using Università.DataModel;
+using Università.DataModels;
 
 namespace Università
 {
@@ -8,15 +8,27 @@ namespace Università
     {
         static void Main(string[] args)
         {
-            Utility utility = new Utility();
-            utility.GetSetApplicationParams();
+            Utility utility = new();
             utility.GetSetApplicationParams();
             Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File(Path.Combine(ConfigParams.AppFilePath, "SeriLogger.log")).CreateLogger();
             Log.Information("Esecuzione programma gestione Università");
             //Log.Error("Esempio errore");
-            Start.menu();   
-        }
+            //Start.Menu();
 
-               
+
+            
+            //Universita.Studenti.Add(new Studente("az001","Mario","Cornuto",20,"Via dei corni", MainEnumerators.Genere.Maschio));
+            Universita.Studenti.Add(ObtainData.OttieniStudente());
+            Console.WriteLine("Visualizzazione tutti studenti");
+            ObtainData.SalvaListaStudentiFile();
+            Universita.Studenti.Clear();
+            ObtainData.OttieniListaStudenteFile();
+
+            foreach (Studente studente in Universita.Studenti)
+            {
+                studente.Print();
+            }
+
+        }
     }
 }

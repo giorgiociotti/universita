@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Università.BLogic
 {
-    internal class Start
+    internal static class Start
     {
-        internal static void menu()
+        internal static void Menu()
         {
             while (true)
             {
@@ -43,7 +43,7 @@ namespace Università.BLogic
             }
         }
 
-        private static void EsploraFacolta()
+        static void EsploraFacolta()
         {
             Console.Clear();
             Console.WriteLine("=== Esplora le Facoltà ===");
@@ -55,7 +55,7 @@ namespace Università.BLogic
             Console.ReadLine();
         }
 
-        private static void MenuStudente()
+        static void MenuStudente()
         {
             Console.Clear();
             Console.WriteLine("=== Menu Studente ===");
@@ -65,8 +65,7 @@ namespace Università.BLogic
             Console.ReadLine();
 
         }
-
-        private static void MenuDocente()
+        static void MenuDocente()
         {
             Console.Clear();
             Console.WriteLine("=== Menu Docente ===");

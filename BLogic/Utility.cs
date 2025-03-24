@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Università.DataModel;
+using Università.DataModels;
 
 namespace Università.BLogic
 {
@@ -14,7 +14,7 @@ namespace Università.BLogic
         /// It gets the application parameters from app settings
         /// </summary>
         internal void GetSetApplicationParams()
-        {
+        {            
 
             string? filePath = ConfigurationManager.AppSettings["FilePath"];
             string? studentiFileName = ConfigurationManager.AppSettings["StudentiFileName"];
@@ -22,7 +22,7 @@ namespace Università.BLogic
 
 
             if (filePath != null && studentiFileName != null && docentiFileName != null)
-            {
+            {                
                 ConfigParams.AppFilePath = filePath;
                 ConfigParams.StudentiFileName = Path.Combine(filePath, studentiFileName);
                 ConfigParams.DocentiFileName = Path.Combine(filePath, docentiFileName);
@@ -31,7 +31,7 @@ namespace Università.BLogic
             {
                 Console.WriteLine("FilePath, DocentiFileName o StudentiFileName sono nulli in app settings.");
             }
-
+            
         }
     }
 }

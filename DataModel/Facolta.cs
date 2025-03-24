@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Università.DataModel
+namespace Università.DataModels
 {
-
     internal class Facolta
     {
-        internal MainEnumerators.Facolta Nome { get; set; }
+        internal MainEnumerators.Facolta Nome{ get; set; }
         internal MainEnumerators.TipoCorso Tipo { get; set; }
         internal DateTime Orario { get; set; }
-        internal bool Lab { get; set; }
-        internal List<Esame> esami { get; set; } = new List<Esame>();
-        internal List<Studente> studenti { get; set; } = new List<Studente>();
+        internal bool Lab {  get; set; }
+        internal List<Esame> Esami { get; set; } = [];
+        
 
         internal Facolta(MainEnumerators.Facolta nome, MainEnumerators.TipoCorso tipo, DateTime orario, bool lab)
         {
@@ -32,4 +31,3 @@ namespace Università.DataModel
         }
     }
 }
-

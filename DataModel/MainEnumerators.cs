@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Università.DataModel
+namespace Università.DataModels
 {
     internal class MainEnumerators
     {
@@ -15,6 +15,7 @@ namespace Università.DataModel
             Femmina,
             Altro
         }
+
         internal enum Facolta
         {
             None,

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Università.DataModel
+namespace Università.DataModels
 {
-    internal class Universita
+    internal static class Universita
     {
-        internal List<Facolta> Facolta { get; set; } = new List<Facolta>();
-        internal List<Docente> Docenti { get; set; } = new List<Docente>();
-        internal List<Studente> Studenti { get; set; } = new List<Studente>();
-        internal string Nome { get; set; }
+        internal static List<Facolta> Facolta { get; set; } = [];
+        internal static List<Docente> Docenti { get; set; } = [];
+        internal static List<Studente> Studenti { get; set; } = [];
+        internal static string Nome { get; set; }
     }
 }
